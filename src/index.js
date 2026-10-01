@@ -1,4 +1,5 @@
 import { routeUpdate } from "./bot/router.js";
+import { getConfig } from "./config.js";
 
 export default {
   async fetch(request, env) {
@@ -12,7 +13,7 @@ export default {
       return new Response("Not found", { status: 404 });
     }
 
-    const webhookSecret = env.TELEGRAM_WEBHOOK_SECRET;
+    const { webhookSecret } = getConfig(env).telegram;
     if (!webhookSecret || request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== webhookSecret) {
       return new Response("Unauthorized", { status: 401 });
     }
